@@ -10,7 +10,6 @@ export class Decks extends Component {
   static propTypes = {
     decks: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
-      numberCards: PropTypes.number.isRequired,
     })).isRequired,
   }
   componentDidMount() {
@@ -27,7 +26,6 @@ export class Decks extends Component {
           <DeckSummary
             key={deck.title}
             title={deck.title}
-            numberCards={deck.numberCards}
             navigation={this.props.navigation}
           />
         ))}
@@ -49,7 +47,6 @@ function mapStateToProps(decks) {
   return {
     decks: Object.keys(decks).map(deck => ({
       title: deck,
-      numberCards: decks[deck].questions.length,
     })),
   }
 }

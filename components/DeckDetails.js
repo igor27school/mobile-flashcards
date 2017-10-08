@@ -18,7 +18,13 @@ export class DeckDetails extends Component {
     deleteDeck(title)
   }
   addCard = () => {
-    // TODO: Implement
+    const { title, numberCards } = this.props
+    this.props.navigation.navigate(
+      'NewCard',
+      {
+        deckTitle: title,
+      }
+    )
   }
   startQuiz = () => {
     // TODO: Implement
@@ -67,8 +73,11 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(decks, { navigation }) {
-  const { title, numberCards } = navigation.state.params
-  return { title, numberCards }
+  const { title } = navigation.state.params
+  return {
+    title,
+    numberCards: decks[title].questions.length,
+  }
 }
 
 export default connect(mapStateToProps)(DeckDetails)

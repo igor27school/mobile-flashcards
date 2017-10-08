@@ -1,29 +1,28 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, Text, TextInput, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
 import { saveDeckTitle } from '../utils/api'
 import { white, black } from '../utils/colors'
-import { addDeck } from '../actions'
+import { receiveDeck } from '../actions'
 import Button from './Button'
+import Input from './Input'
 
 export class NewDeck extends Component {
   state = {
     title: '',
   }
   submit = () => {
-    this.setState({title: ''})
-
     const { title } = this.state
-    this.props.dispatch(addDeck(title))
+    this.props.dispatch(receiveDeck(title))
     this.props.navigation.goBack()
     saveDeckTitle(title)
+    this.setState({title: ''})
   }
   render() {
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
         <Text style={styles.label}>What is the title of your new deck?</Text>
-        <TextInput
-          style={styles.titleInput}
+        <Input
           placeholder='Deck Title'
           value={this.state.title}
           onChangeText={text => this.setState({title: text})}

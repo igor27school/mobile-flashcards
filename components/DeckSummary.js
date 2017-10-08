@@ -28,7 +28,6 @@ export class DeckSummary extends Component {
               'DeckDetails',
               {
                 title: title,
-                numberCards: numberCards,
               }
             )}
         >
@@ -62,4 +61,11 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect()(DeckSummary)
+function mapStateToProps(decks, { title }) {
+  return {
+    title,
+    numberCards: decks[title].questions.length,
+  }
+}
+
+export default connect(mapStateToProps)(DeckSummary)

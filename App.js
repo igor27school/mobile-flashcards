@@ -8,6 +8,7 @@ import reducer from './reducers'
 import Decks from './components/Decks'
 import NewDeck from './components/NewDeck'
 import DeckDetails from './components/DeckDetails'
+import NewCard from './components/NewCard'
 
 const Tabs = TabNavigator({
   Decks: {
@@ -33,7 +34,10 @@ const MainNavigator = StackNavigator({
   },
   DeckDetails: {
     screen: DeckDetails,
-  }
+  },
+  NewCard: {
+    screen: NewCard,
+  },
 })
 
 export default class App extends Component {
