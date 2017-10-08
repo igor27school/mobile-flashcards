@@ -1,41 +1,52 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import DeckSummary from './components/DeckSummary'
+import { View, StatusBar } from 'react-native'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import { TabNavigator, StackNavigator } from 'react-navigation'
+import { Constants } from 'expo'
+import reducer from './reducers'
+import Decks from './components/Decks'
+import NewDeck from './components/NewDeck'
+import DeckDetails from './components/DeckDetails'
+
+const Tabs = TabNavigator({
+  Decks: {
+    screen: Decks,
+    navigationOptions: {
+      tabBarLabel: 'Decks',
+    },
+  },
+  NewDeck: {
+    screen: NewDeck,
+    navigationOptions: {
+      tabBarLabel: 'New Deck',
+    },
+  },
+})
+
+const MainNavigator = StackNavigator({
+  Home: {
+    screen: Tabs,
+  },
+  NewDeck: {
+    screen: NewDeck,
+  },
+  DeckDetails: {
+    screen: DeckDetails,
+  }
+})
 
 export default class App extends Component {
   render() {
-    const decks = [
-      {
-        title: 'udacicards',
-        numberCards: 3,
-      },
-      {
-        title: 'new deck',
-        numberCards: 0,
-      },
-      {
-        title: 'New deck 2',
-        numberCards: 0,
-      },
-    ]
     return (
-      <View style={styles.container}>
-        {decks.map(deck => (
-          <DeckSummary
-            key={deck.title}
-            title={deck.title}
-            numberCards={deck.numberCards} />
-        ))}
-      </View>
+      <Provider store={createStore(reducer)}>
+        <View style={{flex: 1}}>
+          <View style={{height: Constants.statusBarHeight}}>
+            <StatusBar translucent />
+          </View>
+          <MainNavigator />
+        </View>
+      </Provider>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-})
