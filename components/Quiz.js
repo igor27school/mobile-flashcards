@@ -10,7 +10,13 @@ import Button from './Button'
 
 export class Quiz extends Component {
   static propTypes = {
-    navigation: PropTypes.object.isRequired,
+    navigation: PropTypes.shape({
+      state: PropTypes.shape({
+        params: PropTypes.shape({
+          title: PropTypes.string.isRequired,
+        }).isRequired,
+      }).isRequired,
+    }).isRequired,
     questionNumber: PropTypes.number.isRequired,
     numberCards: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
@@ -24,18 +30,24 @@ export class Quiz extends Component {
   render() {
     const { questionNumber, numberCards, text, type, correct, incorrect } = this.props
     const { setParams } = this.props.navigation
+    const questionsLeft = numberCards - questionNumber
     return (
       <View style={styles.container}>
-        <Text>{questionNumber} / {numberCards}</Text>
         <View style={styles.contents}>
-          <Text style={{fontSize: 24}}>{text}</Text>
+          <Text style={{fontSize: 24, textAlign: 'center'}}>{text}</Text>
           <Button
             backgroundColor={white}
             onPress={() => setParams({type: type === QUESTION_TYPE ? ANSWER_TYPE : QUESTION_TYPE})}
-            text={type === QUESTION_TYPE ? 'Answer' : 'Question'}
+            text={type === QUESTION_TYPE ? 'Show Answer' : 'Show Question'}
             textColor={red}
           />
         </View>
+        <Text>
+          {questionsLeft === 0
+            ? 'Last question'
+            : `${questionsLeft} ${questionsLeft === 1 ? 'question' : 'questions'} left`
+          }
+        </Text>
         <View>
           <Button
             backgroundColor={green}

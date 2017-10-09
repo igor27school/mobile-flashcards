@@ -20,9 +20,16 @@ export class Decks extends Component {
   }
   render() {
     const { decks } = this.props
+    if (decks.length === 0) {
+      return (
+        <View style={styles.container}>
+          <Text style={{textAlign: 'center'}}>You do not have any decks, start by creating one!</Text>
+        </View>
+      )
+    }
     return (
       <View style={styles.container}>
-        {Array.isArray(decks) && decks.map(deck => (
+        {decks.map(deck => (
           <DeckSummary
             key={deck.title}
             title={deck.title}

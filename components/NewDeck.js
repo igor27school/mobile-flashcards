@@ -14,7 +14,10 @@ export class NewDeck extends Component {
   submit = () => {
     const { title } = this.state
     this.props.dispatch(receiveDeck(title))
-    this.props.navigation.goBack()
+    this.props.navigation.navigate(
+      'DeckDetails',
+      { title }
+    )
     saveDeckTitle(title)
     this.setState({title: ''})
   }
@@ -30,7 +33,7 @@ export class NewDeck extends Component {
         <Button
           backgroundColor={black}
           onPress={this.submit}
-          text='Submit'
+          text='Create Deck'
           textColor={white}
         />
       </KeyboardAvoidingView>

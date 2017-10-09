@@ -8,6 +8,7 @@ import { QUESTION_TYPE, ANSWER_TYPE } from '../utils/constants'
 import { removeDeck } from '../actions'
 import Button from './Button'
 import Quiz from './Quiz'
+import QuizResults from './QuizResults'
 
 export class DeckDetails extends Component {
   static propTypes = {
@@ -40,18 +41,19 @@ export class DeckDetails extends Component {
     const { numberCards, title } = this.props
     const { questionNumber, numberCorrect } = this.state
     const { navigate } = this.props.navigation
+
     const newNumberCorrect = correctAnswer ? numberCorrect + 1 : numberCorrect
     if (questionNumber === numberCards) {
-      alert(`You got ${newNumberCorrect} out of ${numberCards} correct`)
-      this.setState({
-        questionNumber: 1,
-        type: QUESTION_TYPE,
-        numberCorrect: 0,
-      })
       navigate(
-        'DeckDetails',
+        'QuizResults',
         {
           title,
+          percentage: (100 * newNumberCorrect / numberCards).toFixed(0),
+          restartQuiz: this.startQuiz,
+          backToDeck: () => navigate(
+            'DeckDetails',
+            { title }
+          )
         }
       )
     } else {
@@ -81,14 +83,18 @@ export class DeckDetails extends Component {
   }
   startQuiz = () => {
     const { title, numberCards } = this.props
-    const {questionNumber, type} = this.state
+    this.setState({
+      questionNumber: 1,
+      type: QUESTION_TYPE,
+      numberCorrect: 0,
+    })
     this.props.navigation.navigate(
       'Quiz',
       {
         title,
-        questionNumber,
+        questionNumber: 1,
         numberCards,
-        type,
+        type: QUESTION_TYPE,
         correct: this.correct,
         incorrect: this.incorrect,
       }
