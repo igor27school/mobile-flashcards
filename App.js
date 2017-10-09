@@ -9,6 +9,7 @@ import Decks from './components/Decks'
 import NewDeck from './components/NewDeck'
 import DeckDetails from './components/DeckDetails'
 import NewCard from './components/NewCard'
+import Quiz from './components/Quiz'
 
 const Tabs = TabNavigator({
   Decks: {
@@ -37,6 +38,9 @@ const MainNavigator = StackNavigator({
   },
   NewCard: {
     screen: NewCard,
+  },
+  Quiz: {
+    screen: Quiz,
   },
 })
 

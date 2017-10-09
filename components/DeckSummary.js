@@ -26,9 +26,7 @@ export class DeckSummary extends Component {
           style={styles.card}
           onPress={() => this.props.navigation.navigate(
               'DeckDetails',
-              {
-                title: title,
-              }
+              { title }
             )}
         >
           <Text style={{fontSize: 24}}>{title}</Text>

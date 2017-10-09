@@ -4,8 +4,10 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { deleteDeck } from '../utils/api'
 import { white, black, gray } from '../utils/colors'
+import { QUESTION_TYPE, ANSWER_TYPE } from '../utils/constants'
 import { removeDeck } from '../actions'
 import Button from './Button'
+import Quiz from './Quiz'
 
 export class DeckDetails extends Component {
   static propTypes = {
@@ -14,6 +16,11 @@ export class DeckDetails extends Component {
   }
   static navigationOptions = ({ navigation }) => {
     return { title: navigation.state.params.title }
+  }
+  state = {
+    questionNumber: 1,
+    type: QUESTION_TYPE,
+    numberCorrect: 0,
   }
   delete = () => {
     const { title } = this.props
@@ -29,8 +36,63 @@ export class DeckDetails extends Component {
       }
     )
   }
+  evaluate = correctAnswer => {
+    const { numberCards, title } = this.props
+    const { questionNumber, numberCorrect } = this.state
+    const { navigate } = this.props.navigation
+    const newNumberCorrect = correctAnswer ? numberCorrect + 1 : numberCorrect
+    if (questionNumber === numberCards) {
+      alert(`You got ${newNumberCorrect} out of ${numberCards} correct`)
+      this.setState({
+        questionNumber: 1,
+        type: QUESTION_TYPE,
+        numberCorrect: 0,
+      })
+      navigate(
+        'DeckDetails',
+        {
+          title,
+        }
+      )
+    } else {
+      this.setState({
+        questionNumber: questionNumber + 1,
+        type: QUESTION_TYPE,
+        numberCorrect: newNumberCorrect,
+      })
+      navigate(
+        'Quiz',
+        {
+          title,
+          questionNumber: questionNumber + 1,
+          numberCards,
+          type: QUESTION_TYPE,
+          correct: this.correct,
+          incorrect: this.incorrect,
+        }
+      )
+    }
+  }
+  correct = () => {
+    this.evaluate(true)
+  }
+  incorrect = () => {
+    this.evaluate(false)
+  }
   startQuiz = () => {
-    // TODO: Implement
+    const { title, numberCards } = this.props
+    const {questionNumber, type} = this.state
+    this.props.navigation.navigate(
+      'Quiz',
+      {
+        title,
+        questionNumber,
+        numberCards,
+        type,
+        correct: this.correct,
+        incorrect: this.incorrect,
+      }
+    )
   }
   render() {
     const { title, numberCards } = this.props
@@ -47,12 +109,14 @@ export class DeckDetails extends Component {
             text='Add Card'
             textColor={black}
           />
-          <Button
-            backgroundColor={black}
-            onPress={this.startQuiz}
-            text='Start Quiz'
-            textColor={white}
-          />
+          {numberCards > 0 && (
+            <Button
+              backgroundColor={black}
+              onPress={this.startQuiz}
+              text='Start Quiz'
+              textColor={white}
+            />
+          )}
         </View>
       </View>
     )
