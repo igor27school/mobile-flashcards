@@ -12,6 +12,9 @@ export class DeckDetails extends Component {
     title: PropTypes.string.isRequired,
     numberCards: PropTypes.number.isRequired,
   }
+  static navigationOptions = ({ navigation }) => {
+    return { title: navigation.state.params.title }
+  }
   delete = () => {
     const { title } = this.props
     this.props.dispatch(removeDeck(title))
