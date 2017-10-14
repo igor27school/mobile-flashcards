@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { deleteDeck } from '../utils/api'
@@ -22,6 +22,12 @@ export class DeckDetails extends Component {
     questionNumber: 1,
     type: QUESTION_TYPE,
     numberCorrect: 0,
+    flexValue: new Animated.Value(0.2),
+  }
+  componentDidMount() {
+    const { flexValue } = this.state
+
+    Animated.spring(flexValue, { toValue: 1, speed: 1 }).start()
   }
   delete = () => {
     const { title } = this.props
@@ -102,8 +108,9 @@ export class DeckDetails extends Component {
   }
   render() {
     const { title, numberCards } = this.props
+    const { flexValue } = this.state
     return (
-      <View style={styles.container}>
+      <Animated.View style={[styles.container, { flex: flexValue }]}>
         <View style={styles.deckInfo}>
           <Text style={{fontSize: 24}}>{title}</Text>
           <Text style={{color: gray}}>{numberCards} {numberCards == 1 ? 'card' : 'cards'}</Text>
@@ -124,14 +131,13 @@ export class DeckDetails extends Component {
             />
           )}
         </View>
-      </View>
+      </Animated.View>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'space-around',

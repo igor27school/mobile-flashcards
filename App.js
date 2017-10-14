@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import { Constants } from 'expo'
+import { setLocalNotification } from './utils/notificationsHelper'
 import reducer from './reducers'
 import Decks from './components/Decks'
 import NewDeck from './components/NewDeck'
@@ -49,6 +50,9 @@ const MainNavigator = StackNavigator({
 })
 
 export default class App extends Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
   render() {
     return (
       <Provider store={createStore(reducer)}>

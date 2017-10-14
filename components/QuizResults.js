@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import PropTypes from 'prop-types'
 import { red, green, white } from '../utils/colors'
+import { clearLocalNotification, setLocalNotification } from '../utils/notificationsHelper'
 import Button from './Button'
 
 export default class QuizResults extends Component {
@@ -19,6 +20,9 @@ export default class QuizResults extends Component {
   }
   static navigationOptions = ({ navigation }) => {
     return { title: `${navigation.state.params.title} Quiz Results` }
+  }
+  componentDidMount() {
+    clearLocalNotification().then(setLocalNotification)
   }
   render() {
     const { percentage, restartQuiz, backToDeck } = this.props.navigation.state.params
