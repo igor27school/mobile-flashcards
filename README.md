@@ -6,6 +6,8 @@ Mobile Flashcards is a basic app that allows you to create decks of cards, each 
 
 This project uses React-Native with Redux. It also relies on react-navigation library.
 
+NOTE: The code has only been tested using the Android platform.
+
 ## Installation
 
 This project can be started using `npm install` followed by `npm start`.
