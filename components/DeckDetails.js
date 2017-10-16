@@ -106,6 +106,9 @@ export class DeckDetails extends Component {
       }
     )
   }
+  backToDecks = () => {
+    this.props.navigation.navigate('Decks')
+  }
   render() {
     const { title, numberCards } = this.props
     const { flexValue } = this.state
@@ -130,6 +133,12 @@ export class DeckDetails extends Component {
               textColor={white}
             />
           )}
+          <Button
+            backgroundColor={white}
+            onPress={this.backToDecks}
+            text='Back to Decks'
+            textColor={black}
+          />
         </View>
       </Animated.View>
     )
